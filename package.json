@@ -14,7 +14,7 @@
     "tsc:w": "tsc -w"
   },
   "keywords": [],
-  "author": "",
+  "author": "Eulier González",
   "license": "MIT",
   "dependencies": {
     "@angular/common": "~2.4.0",
