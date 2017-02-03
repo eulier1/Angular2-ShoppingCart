@@ -1,4 +1,4 @@
-# Angular QuickStart Source
+# Angular2-ShoppingCart
 
 ## Prerequisites
 
