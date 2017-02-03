@@ -1,0 +1,251 @@
+<section >
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button *ngIf="displayDOM == 'home' " type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <button *ngIf="displayDOM == 'product' " type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+        <span (click)="showShoppingCart()" class="glyphicon glyphicon-shopping-cart"><span *ngIf="cartDetail.length > 0" class="badge">{{cartDetail.length}}</span></span>
+      </button>
+
+      <button *ngIf="displayDOM == 'shoppingcart' " type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+        <span (click)="showProduct()" class="glyphicon glyphicon-search"></span>
+      </button>
+
+      <a class="navbar-brand" (click)="showHome()" href="#">Rappi</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+      <ul class="nav navbar-nav navbar-right">
+        <li (click)="showShoppingCart()" *ngIf="displayDOM == 'product' " >
+          <a>Shopping Cart
+          <span class="glyphicon glyphicon-shopping-cart"><span *ngIf="cartDetail.length > 0" class="badge">{{cartDetail.length}}</span></span>
+          </a>
+        </li>
+        <li (click)="showProduct()" *ngIf="displayDOM == 'shoppingcart' " >
+          <a>to Search
+          <span class="glyphicon glyphicon-search"></span>
+          </a>
+        </li>
+        <li *ngIf="displayDOM == 'home' " ><a>About Us</a></li>
+        <li *ngIf="displayDOM == 'home' " ><a>Location</a></li>
+        <li *ngIf="displayDOM == 'home' " ><a>Contact Us</a></li>
+      </ul>
+    </div>
+    
+
+  </div>
+</nav>
+
+<div *ngIf="displayDOM == 'home' " class="jumbotron row">
+  <h1 class="text-center col-xs-12"><img alt="rappi" class="xs-img" src="app/assets/ui/img/rappilogotipo.png"></h1>
+  <p class="text-center col-xs-12"><img alt="corremos por ti" class="xs-img" src="app/assets/ui/img/rappilema.png"></p>
+  <p class="text-center col-xs-12"><a class="btn btn-primary btn-lg" (click)="showProduct()" role="button">To Buy</a></p>
+</div>
+</section>
+
+<section *ngIf="displayDOM == 'product' " >
+  <div class="row">
+    <aside class="col-sm-3"><!-- Sidemenu -->
+      <div class="row sidemenu__button" ><!-- Categorias -->
+
+        <ul class="list-group">
+          <li class="list-group-item">
+            <span> What you're looking today? </span>
+          </li>
+        </ul>
+        
+        <div class="row sidemenu__button" ><!-- Search -->
+          <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <input [(ngModel)]="searchFriend" (input)="getByName($event)" type="text" class="form-control" placeholder="Name">
+          </div>
+        </div><!-- /.Search -->
+          <div class="btn-group text-center">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Categories
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a (click)="showCategories('1')" href="#">Drinks</a></li>
+              <li><a (click)="showCategories('2')" href="#">Lunch</a></li>
+              <li><a (click)="showCategories('3')" href="#">Food</a></li>
+              <li><a (click)="showCategories('4')" href="#">Sea</a></li>
+            </ul>
+          </div>
+      </div>
+      <div class="row sidemenu__button" ><!-- Productos -->
+          <div class="btn-group text-center">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Products
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a (click)="showProducts('1')" href="#">Available</a></li>
+              <li><a (click)="showProducts('2')" href="#">Sold Out</a></li>
+              <li><a (click)="showProducts('3')" href="#">Best Seller</a></li>
+            </ul>
+          </div>
+      </div><!-- /.Productos -->
+      <div class="row sidemenu__button" ><!-- Precios -->
+          <div class="btn-group text-center">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Prices
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a (click)="showPrice('1')" href="#">More 30.000</a></li>
+              <li><a (click)="showPrice('2')" href="#">Less 10.000</a></li>
+            </ul>
+          </div>
+      </div><!-- /.Precios -->
+      <div class="row sidemenu__button" ><!-- Filtro -->
+          <div class="btn-group text-center">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Filter
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a (click)="orderAZ()" href="#">Name (A-Z)</a></li>
+              <li><a (click)="expensive()" href="#">Expensiest</a></li>
+              <li><a (click)="cheapest()"href="#">Cheapest</a></li>
+            </ul>
+          </div>
+      </div><!-- /.Precios -->
+    </aside><!-- /.Sidemenu -->
+    <article class="col-sm-9 col-md-9 col-lg-9"><!-- List-Product --> 
+    <div class="well">
+      <div class="row">
+
+        <div *ngIf=" products.length == 0" class="panel panel-danger"><!-- panel 404 element -->
+          <div class="panel-heading">404</div>
+          <div class="panel-body">
+            <p>We are apologize, couldn't find anything ;(</p>
+          </div>
+        </div><!-- /.panel 404 element -->
+
+        <div *ngFor="let item of products; let i = index" class="col-sm-6 col-md-6 col-lg-4">
+          
+          <div class="panel panel-success">
+            <div class="panel-heading">{{item.name}}<span class="pull-right glyphicon glyphicon-usd"><strong>{{item.price}}</strong></span></div>
+            <div class="panel-body">
+              <p class="text-center"><img [src]="item.img" alt="producto" class="img-thumbnail"></p>
+            </div>
+            
+              <!-- List group -->
+            <ul class="list-group padding-left container-fluid ">
+              <span *ngFor="let ctg of products[i].categories; let j = index" >
+              <span *ngIf="ctg == 1" class="label label-info">Drinks</span> <!-- Food -->
+              <span *ngIf="ctg == 2" class="label label-primary">Lunch</span> <!-- Sea -->
+              <span *ngIf="ctg == 3" class="label label-default">Food</span> <!-- Drinks -->
+              <span *ngIf="ctg == 4" class="label label-warning">Sea</span> <!-- Lunch -->
+              </span>
+            </ul>
+
+            <!-- Table -->
+            <div class="list-group container-fluid">            
+              <p class="list-group-item-text padding">{{item.description}}</p>
+              <p class="list-group-item-text padding">
+                <span  class="pull-left padding" *ngIf="item.available"> Available ? : 
+                <span  class="glyphicon glyphicon-ok "></span>
+                </span>
+                <span  class="pull-left padding" *ngIf="!item.available"> Available ? : 
+                <span  class="glyphicon glyphicon-remove "></span>
+                </span>
+                <span class="pull-right padding" *ngIf="item.best_seller"> 
+                  <span class="glyphicon glyphicon-star">
+                  </span>
+                   Best Seller
+                </span>
+              </p>
+            </div>
+
+            <div class="container-fluid padding">
+              <p class="padding">
+              <a href="#" class="btn btn-success pull-left margin" (click)="addCart(item.id ,item)" role="button"><span class="glyphicon glyphicon-plus"></span><span class="glyphicon glyphicon-shopping-cart"></span></a>
+              
+              </p>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    </article><!-- /.List-Product -->
+  </div>
+</section>
+
+<section *ngIf="displayDOM == 'shoppingcart'">
+  <article class="col-sm-12 col-md-12 col-lg-12"><!-- List-Product --> 
+    <div class="well">
+      <div class="row">
+
+        <ul class="list-group">
+          <li class="list-group-item">
+            <span class="glyphicon glyphicon-shopping-cart"><span *ngIf="cartDetail.length > 0" class="badge">{{cartDetail.length}}</span> Your ShoppingCart </span>
+            <span (click)="clearCart()" class="btn btn-xs btn-default pull-right ">Clear ShoppingCart</span>
+          </li>
+        </ul>
+
+        <div *ngIf="cartDetail.length == 0" class="panel panel-default"><!-- panel 404 element -->
+          <div class="panel-heading"></div>
+          <div class="panel-body">
+            <p>Nothing add to Shopping Cart yet!</p>
+          </div>
+        </div><!-- /.panel 404 element -->
+
+        
+            
+        <div *ngFor="let item of cartDetail; let i = index" class="col-sm-6 col-md-6 col-lg-4">
+          
+          <div class="panel panel-success">
+            <div class="panel-heading">{{item.product.name}}<span class="pull-right glyphicon glyphicon-usd"><strong>{{item.product.price}}</strong></span></div>
+            <div class="panel-body">
+              <p class="text-center"><img [src]="item.product.img" alt="producto" class="img-thumbnail"></p>
+            </div>
+            
+              <!-- List group -->
+            <ul class="list-group padding-left container-fluid ">
+              <span *ngFor="let ctgr of cartDetail[i].product.categories ; let j = index" >
+              <span *ngIf="ctgr == 1" class="label label-info">Drinks</span> <!-- Food -->
+              <span *ngIf="ctgr == 2" class="label label-primary">Lunch</span> <!-- Sea -->
+              <span *ngIf="ctgr == 3" class="label label-default">Food</span> <!-- Drinks -->
+              <span *ngIf="ctgr == 4" class="label label-warning">Sea</span> <!-- Lunch -->
+              </span>
+            </ul>
+
+            <!-- Table -->
+            <div class="list-group container-fluid">            
+              <p class="list-group-item-text padding">{{item.product.description}}</p>
+              <p class="list-group-item-text padding">
+                <span  class="pull-left padding" *ngIf="item.product.available"> Available ? : 
+                <span  class="glyphicon glyphicon-ok "></span>
+                </span>
+                <span  class="pull-left padding" *ngIf="!item.product.available"> Available ? : 
+                <span  class="glyphicon glyphicon-remove "></span>
+                </span>
+                <span class="pull-right padding" *ngIf="item.product.best_seller"> 
+                  <span class="glyphicon glyphicon-star">
+                  </span>
+                   Best Seller
+                </span>
+              </p>
+            </div>
+
+            <div class="container-fluid padding">
+              <p class="padding">
+              <a href="#" class="btn btn-default pull-left margin" (click)="removeCart(item.product.id ,item)" role="button"><span class="glyphicon glyphicon-shopping-cart"><span class="glyphicon glyphicon-minus"></span></span></a>
+              </p>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    </article><!-- /.List-Product -->
+</section>
